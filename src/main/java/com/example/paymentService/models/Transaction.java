@@ -1,41 +1,40 @@
 package com.example.paymentService.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "transaction_id")
     private Long id;
 
-    @NotNull
     @ManyToOne
+    @JoinColumn(name = "bill_id")
     private Bill bill;
 
     @NotNull
-    private Long processDate;
+    @Column(nullable = false)
+    private Date processDate;
 
     // when becomes true, paymentDate in Bill becomes equal processDate of this Transaction
     @NotNull
-    private boolean isSuccessful;
+    @Column(nullable = false)
+    private Boolean isSuccessful;
 
-    public Transaction(Long id, Bill bill, Long processDate, boolean isSuccessful) {
-        this.id = id;
-        this.bill = bill;
-        this.processDate = processDate;
-        this.isSuccessful = isSuccessful;
-    }
-
-    public Transaction(Bill bill, Long processDate, boolean isSuccessful) {
+    public Transaction(Bill bill, Date processDate, boolean isSuccessful) {
         this.bill = bill;
         this.processDate = processDate;
         this.isSuccessful = isSuccessful;
